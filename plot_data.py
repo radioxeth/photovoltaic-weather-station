@@ -1,27 +1,28 @@
 import pandas as pd
-import matplotlib.pyplot as plt
-from utils_plt import plot_corr_matrix, plot_scatter, plot_line, plot_3d_scatter
+from utils_plt import (
+    plot_3d_scatter_no_index,
+    plot_corr_matrix,
+    plot_scatter,
+    plot_line,
+    plot_3d_scatter,
+)
+from utils import mean_columns, pca_data, set_data_date_index, solar_columns
+
 
 # Load the solar_energy data
 weather_solar_data = pd.read_csv("wunderground/data/weather_solar_data.csv")
+
 print(weather_solar_data.head())
-weather_solar_data["obsTimeLocal"] = pd.to_datetime(weather_solar_data["obsTimeLocal"])
 
+# combine solar and mean columns
+# corr_data = weather_solar_data[mean_columns + solar_columns
 
-weather_solar_data["month"] = weather_solar_data["obsTimeLocal"].dt.month
-weather_solar_data["day_of_year"] = weather_solar_data["obsTimeLocal"].dt.day_of_year
-weather_solar_data.set_index("obsTimeLocal", inplace=True)
+weather_solar_data = set_data_date_index(weather_solar_data, "obsTimeLocal")
+## remove NA columns from weather solar data
 
 # make a correlation matrix
-# plot_corr_matrix(weather_solar_data, "corr_matrix.png")
+# plot_corr_matrix(corr_data, "corr_matrix.png")
 
-# resample the data into 24-hour intervals, sum the solar energy and power, mean for the rest
-# resampled_data = weather_solar_data.resample("D").mean()
-# resampled_data["solarEnergy"] = weather_solar_data["solarEnergy"].resample("24H").sum()
-# resampled_data["solarPower"] = weather_solar_data["solarPower"].resample("24H").sum()
-
-
-# plot a scatter chart of the solar power vs tempAvg
 
 DIR_SCATTER_PLOT = "scatter_plots"
 # plot_scatter(
@@ -114,19 +115,19 @@ DIR_SCATTER_PLOT = "scatter_plots"
 #     f"{DIR_SCATTER_PLOT}/scatter_Energy_vs_windspeed.png",
 # )
 
-plot_3d_scatter(
-    weather_solar_data,
-    "day_of_year",
-    "windspeedAvg",
-    "solarEnergy",
-    "Day of Year",
-    "Wind Speed Avg (mph)",
-    "Energy (Wh)",
-    "Solar Energy vs Wind Speed vs Day of Year",
-    f"{DIR_SCATTER_PLOT}/scatter_Energy_vs_windspeed_day_of_year.png",
-    flip_x_axes=True,
-    flip_y_axes=True,
-)
+# plot_3d_scatter(
+#     weather_solar_data,
+#     "day_of_year",
+#     "windspeedAvg",
+#     "solarEnergy",
+#     "Day of Year",
+#     "Wind Speed Avg (mph)",
+#     "Energy (Wh)",
+#     "Solar Energy vs Wind Speed vs Day of Year",
+#     f"{DIR_SCATTER_PLOT}/scatter_Energy_vs_windspeed_day_of_year.png",
+#     flip_x_axes=True,
+#     flip_y_axes=True,
+# )
 
 # plot_scatter(
 #     weather_solar_data,
@@ -138,19 +139,34 @@ plot_3d_scatter(
 #     f"{DIR_SCATTER_PLOT}/scatter_Energy_vs_precip.png",
 # )
 
-plot_3d_scatter(
-    weather_solar_data,
-    "day_of_year",
-    "precipTotal",
-    "solarEnergy",
-    "Day of Year",
-    "Precip Total (in)",
-    "Energy (Wh)",
-    "Solar Energy vs Precip vs Day of Year",
-    f"{DIR_SCATTER_PLOT}/scatter_Energy_vs_precip_day_of_year.png",
-    flip_x_axes=True,
-    flip_y_axes=True,
-)
+# plot_3d_scatter(
+#     weather_solar_data,
+#     "day_of_year",
+#     "precipTotal",
+#     "solarEnergy",
+#     "Day of Year",
+#     "Precip Total (in)",
+#     "Energy (Wh)",
+#     "Solar Energy vs Precip vs Day of Year",
+#     f"{DIR_SCATTER_PLOT}/scatter_Energy_vs_precip_day_of_year.png",
+#     flip_x_axes=True,
+#     flip_y_axes=True,
+# )
+
+# plot_3d_scatter(
+#     weather_solar_data,
+#     "day_of_year",
+#     "dewptAvg",
+#     "solarEnergy",
+#     "Day of Year",
+#     "Dew Point Avg (F)",
+#     "Energy (Wh)",
+#     "Solar Energy vs Dew Point vs Day of Year",
+#     f"{DIR_SCATTER_PLOT}/scatter_Energy_vs_dewpt_day_of_year.png",
+#     color_by="day_of_year",
+#     flip_x_axes=True,
+#     flip_y_axes=False,
+# )
 
 # plot_scatter(
 #     weather_solar_data,
@@ -229,3 +245,10 @@ plot_3d_scatter(
 # plt.title("Solar Energy Time Series")
 # plt.savefig("plot.png")
 # plt.close()
+
+print(weather_solar_data.shape)
+
+
+# calculate the PCA
+X_pca = pca_data(weather_solar_data, 17)
+print(X_pca.shape)

@@ -75,6 +75,45 @@ def plot_3d_scatter(
     plt.close()
 
 
+def plot_3d_scatter_no_index(
+    df,
+    x,
+    y,
+    z,
+    xlabel,
+    ylabel,
+    zlabel,
+    title,
+    filename="3d_scatter_plot.png",
+    color_by=None,
+    flip_x_axes=False,
+    flip_y_axes=False,
+    flip_z_axes=False,
+):
+    """
+    Plot a 3D scatter plot of the columns x, y, and z in the DataFrame df
+    """
+    fig = plt.figure()
+    ax = fig.add_subplot(111, projection="3d")
+    if color_by:
+        ax.scatter(df[x], df[y], df[z], c=df[color_by])
+    else:
+        ax.scatter(df[x], df[y], df[z])
+    if flip_x_axes:
+        ax.invert_xaxis()
+    if flip_y_axes:
+        ax.invert_yaxis()
+    if flip_z_axes:
+        ax.invert_zaxis()
+    ax.set_xlabel(xlabel)
+    ax.set_ylabel(ylabel)
+    ax.set_zlabel(zlabel)
+    plt.title(title)
+    plt.tight_layout()
+    plt.savefig(filename)
+    plt.close()
+
+
 def plot_line(df, x, y, xlabel, ylabel, title, filename="line_plot.png"):
     """
     Plot a line plot of the columns x and y in the DataFrame df

@@ -87,6 +87,7 @@ for date in resampled_data.index:
     if not solar_energy.empty:
         resampled_data.loc[date, "solarEnergy"] = solar_energy["energy"].values[0]
 
+resampled_data.drop(columns=["solarRadiationHigh", "uvHigh"], inplace=True)
 
 # fill missing values with 0
 # resampled_data.fillna(0, inplace=True)

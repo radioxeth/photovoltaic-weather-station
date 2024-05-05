@@ -3,7 +3,15 @@ from astral import Observer
 from astral.sun import sun
 import datetime
 from astral import zoneinfo
+import pandas as pd
+from sklearn.decomposition import PCA
+from sklearn.impute import SimpleImputer
 
+solar_columns = [
+    "obsTimeLocal",
+    "solarPower",
+    "solarEnergy",
+]
 numerical_columns = [
     "obsTimeLocal",
     "solarRadiationHigh",
@@ -48,8 +56,6 @@ mean_columns = [
     "windchillAvg",
     "heatindexAvg",
     "pressureTrend",
-    "solarRadiationHigh",
-    "uvHigh",
 ]
 
 max_columns = [
@@ -82,6 +88,8 @@ sum_columns = [
     "precipTotal",
 ]
 
+date_columns = ["year", "month", "day", "hour", "minute", "second"]
+
 
 def get_sunrise_sunset(latitude, longitude, elevation, date_input):
     # Create a location object for the specified city
@@ -100,3 +108,32 @@ def get_sunrise_sunset(latitude, longitude, elevation, date_input):
     print(s)
 
     return sunrise, sunset
+
+
+def set_data_date_expanded(data, date_col):
+    data[date_col] = pd.to_datetime(data[date_col])
+    data["year"] = data["obsTimeLocal"].dt.day
+    data["month"] = data["obsTimeLocal"].dt.month
+    data["day"] = data["obsTimeLocal"].dt.day
+    data["hour"] = data["obsTimeLocal"].dt.hour
+    data["minute"] = data["obsTimeLocal"].dt.minute
+    data["second"] = data["obsTimeLocal"].dt.second
+    return data
+
+
+def set_data_date(data, date_col):
+    data[date_col] = pd.to_datetime(data[date_col])
+    return data
+
+
+def pca_data(data, n_components):
+    # Initialize and apply imputation
+    imputer = SimpleImputer(strategy="mean")
+    data_imputed = imputer.fit_transform(data)
+
+    pca = PCA(n_components=n_components)
+    X_pca = pca.fit_transform(data_imputed)
+
+    # X_pca to df
+    X_pca = pd.DataFrame(X_pca)
+    return X_pca

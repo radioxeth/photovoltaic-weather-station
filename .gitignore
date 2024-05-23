@@ -1,0 +1,9 @@
+**/*.png
+**/*.npy
+**/*.pyc
+**/*.pth
+**/*.csv
+input_seq.npy
+binned_data.npy
+target_seq.npy
+__pycache__/utils.cpython-38.pyc

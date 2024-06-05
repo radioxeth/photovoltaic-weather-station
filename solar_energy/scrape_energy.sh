@@ -7,9 +7,9 @@ if [ -z "$SOLAR_SITE_ID" ] || [ -z "$SOLAR_API_KEY" ]; then
 fi
 
 # Start date as YYYY-MM-DD
-start_date="2020-01-01"
+start_date="2024-06-01"
 # End date as YYYY-MM-DD (exclusive, so set to one month after the last month needed)
-end_date="2024-04-01"
+end_date="2024-07-01"
 
 # Function to increment month
 increment_month() {

@@ -78,9 +78,16 @@ def train_lstm_model(
         "batch_size": batch_size,
         "num_epochs": num_epochs,
         "epoch_loss": epoch_loss,
+        "model_save_path": model_save_path,
+        "input_file_path": input_file_path,
+        "target_file_path": target_file_path,
     }
     pd.Series(metadata).to_json(metadata_save_path)
     print("Metadata saved")
 
 
-train_lstm_model()
+# train_lstm_model()
+
+# main function to train the lstm model
+if __name__ == "__main__":
+    train_lstm_model()

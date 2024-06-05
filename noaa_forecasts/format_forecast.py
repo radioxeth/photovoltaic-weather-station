@@ -1,5 +1,6 @@
 import pandas as pd
 from datetime import datetime
+import os
 
 # Wind direction mappings
 wind_dirs = [
@@ -40,18 +41,19 @@ wind_dirs_degrees = [
 ]
 wind_dir_dict = dict(zip(wind_dirs, wind_dirs_degrees))
 
+
+def binary_column(data, column, threshold=0):
+    data[column] = data[column].apply(lambda x: 1 if x > threshold else 0)
+    return data
+
+
 # Load data
 df = pd.read_csv("weather_periods.csv")
 
-
-# Function to extract date components
-def extract_date_components(date_str):
-    dt = datetime.fromisoformat(date_str.replace("Z", "+00:00"))
-    return dt.month, dt.day, dt.hour, dt.minute
-
-
 # Convert startTime to datetime and extract components
 df["obsTimeLocal"] = pd.to_datetime(df["startTime"])
+# remove times zone
+df["obsTimeLocal"] = df["obsTimeLocal"].dt.tz_localize(None)
 df[["month", "day", "hour", "minute"]] = df["obsTimeLocal"].apply(
     lambda dt: pd.Series([dt.month, dt.day, dt.hour, dt.minute])
 )
@@ -59,13 +61,31 @@ df[["month", "day", "hour", "minute"]] = df["obsTimeLocal"].apply(
 # Reformat the data
 df["tempAvg"] = df["temperature"]
 df["humidityAvg"] = df["relativeHumidity"]
-df["pressureTrend"] = df["temperatureTrend"]
+df["pressureTrend"] = 0
 df["winddirAvg"] = df["windDirection"].map(wind_dir_dict)
 df["windspeedAvg"] = df["windSpeed"].str.extract("(\d+)")[0].astype(float)
-df["precipRate"] = df["precipProbability"]
+df["precipRate"] = df["precipProbability"].apply(lambda x: 1 if x >= 50 else 0)
 df["dewptAvg"] = df["dewpoint"]
 df["windchillAvg"] = df["temperature"]  # Placeholder
 df["heatindexAvg"] = df["temperature"]  # Placeholder
+
+# # add a column to determine how much time has passed since precipRate > 0 and temperature < 32
+# df["timeSincePrecip"] = 0
+# df["timeSinceFreezing"] = 0
+# time_since_precip = 0
+# time_since_freezing = 0
+# for date in df.index:
+#     if df.loc[date, "precipRate"] > 0:
+#         time_since_precip = 0
+#     else:
+#         time_since_precip += 1
+#     if df.loc[date, "tempAvg"] < 32:
+#         time_since_freezing = 0
+#     else:
+#         time_since_freezing += 1
+#     df.loc[date, "timeSincePrecip"] = time_since_precip
+#     df.loc[date, "timeSinceFreezing"] = time_since_freezing
+
 
 # Select required columns
 df_final = df[
@@ -90,7 +110,12 @@ df_final = df[
 # Set index for resampling
 df_final.set_index("obsTimeLocal", inplace=True)
 df_resampled = df_final.resample("15T").ffill()
+df_resampled["minute"] = df_resampled.index.minute
 
 # Save to new CSV
-df_resampled.reset_index().to_csv("formatted_weather_data.csv", index=False)
+# todays date as iso. not time
+today = datetime.now().isoformat().split("T")[0]
+if not os.path.exists(today):
+    os.makedirs(today)
+df_resampled.reset_index().to_csv(f"{today}/formatted_weather_data.csv", index=False)
 print("Data has been reformatted and saved to 'formatted_weather_data.csv'")

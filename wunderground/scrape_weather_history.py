@@ -37,8 +37,8 @@ def fetch_weather_data(station_id, api_key, date):
 # Fetch the weather data for every day from 2020-01-01 to 2023-12-31
 
 # use a date library
-start_date = datetime.datetime(2020, 1, 1)
-end_date = datetime.datetime(2024, 3, 31)
+start_date = datetime.datetime(2024, 5, 1)
+end_date = datetime.datetime(2024, 6, 2)
 current_date = start_date
 while current_date <= end_date:
 
@@ -78,14 +78,14 @@ while current_date <= end_date:
 # Load all the data files
 # Combine all the data files into a single DataFrame
 
-# # Load all the data files
-# data_files = os.listdir("data")
-# dfs = []
-# for file in data_files:
-#     if file.startswith("wu-"):
-#         df = pd.read_csv(f"data/{file}")
-#         dfs.append(df)
+# Load all the data files
+data_files = os.listdir("data")
+dfs = []
+for file in data_files:
+    if file.startswith("wu-"):
+        df = pd.read_csv(f"data/{file}")
+        dfs.append(df)
 
-# # Combine all the data files into a single DataFrame
-# combined_df = pd.concat(dfs)
-# combined_df.to_csv("data/weather_data.csv", index=False)
+# Combine all the data files into a single DataFrame
+combined_df = pd.concat(dfs)
+combined_df.to_csv("data/weather_data.csv", index=False)

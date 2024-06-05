@@ -17,3 +17,5 @@ echo "number,name,startTime,endTime,isDaytime,temperature,temperatureUnit,temper
 
 # Parse JSON and write data to CSV
 echo "$forecast_response" | jq -r '.properties.periods[] | [ .number, .name, .startTime, .endTime, .isDaytime, .temperature, .temperatureUnit, .temperatureTrend, .probabilityOfPrecipitation.value, .dewpoint.value, .relativeHumidity.value, .windSpeed, .windDirection, .icon, .shortForecast, .detailedForecast ] | @csv' >> $csv_file
+
+python3 format_forecast.py

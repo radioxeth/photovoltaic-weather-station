@@ -3,12 +3,4 @@
 **/*.pyc
 **/*.pth
 **/*.csv
-input_seq.npy
-binned_data.npy
-target_seq.npy
 **/*.json
-wunderground/data/weather_solar_data.csv
-wunderground/data/weather_data.csv
-wunderground/data/weather_data_resampled.csv
-solar_power/data/solar_power_data.csv
-*.csv

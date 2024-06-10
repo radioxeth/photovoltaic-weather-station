@@ -7,6 +7,7 @@ from matplotlib import pyplot as plt
 import pandas as pd
 from lstm import LSTMModel
 from torch.utils.data import TensorDataset, DataLoader
+from sklearn.metrics import r2_score, mean_absolute_error, mean_squared_error
 
 
 def infer_lstm_model(
@@ -20,6 +21,9 @@ def infer_lstm_model(
     num_layers=4,
     forecast_plots_directory="forecast_results",
     start_date="2021-01-01",
+    criterion_type="MSE",
+    output_type="linear",
+    hours=24,
 ):
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     print(device)
@@ -48,6 +52,7 @@ def infer_lstm_model(
         output_size=output_size,
         num_layers=num_layers,
         activation=activation,
+        output_type=output_type,
     ).to(device)
     state_dict = torch.load(model_save_path)
     model.load_state_dict(state_dict)
@@ -62,11 +67,14 @@ def infer_lstm_model(
     start_date_dt = pd.to_datetime(start_date)
     with torch.no_grad():
         for inputs, labels in train_loader:
+
             date_str = start_date_dt.strftime("%Y-%m-%d")
+            print(date_str)
             inputs = inputs.view(1, -1, input_size)  # Add batch dimension
             labels = labels.view(-1, output_size)  # Add batch dimension
             outputs = model(inputs)
             outputs = outputs.view(-1, output_size)
+
             # Plot the first day of predictions
             plt.title(f"Forecasted Power {date_str}")
             plt.plot(labels[:, 0].cpu(), label="Actual")
@@ -74,6 +82,31 @@ def infer_lstm_model(
             plt.xlabel("time (minutes)")
             plt.ylabel("solar power (W)")
             plt.legend()
+
+            # calculate the errors
+            r2 = r2_score(labels[:, 0].cpu().numpy(), outputs[:, 0].cpu().numpy())
+            mae = mean_absolute_error(
+                labels[:, 0].cpu().numpy(), outputs[:, 0].cpu().numpy()
+            )
+            mse = mean_squared_error(
+                labels[:, 0].cpu().numpy(), outputs[:, 0].cpu().numpy()
+            )
+            # determine the midpoint of the y axis
+            y_mid_labels = (
+                labels[:, 0].cpu().numpy().max() + labels[:, 0].cpu().numpy().min()
+            ) / 2
+
+            y_mid_output = (
+                outputs[:, 0].cpu().numpy().max() + outputs[:, 0].cpu().numpy().min()
+            ) / 2
+
+            y_mid = (y_mid_labels + y_mid_output) / 2
+
+            # add r2, mae, mse to the plot
+            plt.text(
+                0, y_mid, f"R2: {r2:.2f}\nMAE: {mae:.2f}\nMSE: {mse:.2f}", fontsize=11
+            )
+
             plt.savefig(f"{forecast_plots_directory}/lstm_infer_{date_str}.png")
             plt.close()
 
@@ -82,6 +115,11 @@ def infer_lstm_model(
             labels_sum = labels[:, 0].sum()
             # print(f"{date_str} Predicted: {outputs_sum:.2f} Actual: {labels_sum:.2f}")
 
+            criterion = nn.MSELoss()
+            if criterion_type == "MAE":
+                criterion = nn.L1Loss()
+            elif criterion_type == "MSE":
+                criterion = nn.MSELoss()
             # find the mean squared error
             criterion = nn.MSELoss()
 
@@ -106,7 +144,7 @@ def infer_lstm_model(
                     "mse": loss.item(),
                 }
             )
-            start_date_dt += pd.Timedelta(days=1)
+            start_date_dt += pd.Timedelta(hours=hours)
     # save results to json
     metadata = {
         "input_file_path": input_file_path,
@@ -118,4 +156,16 @@ def infer_lstm_model(
 
 # main function
 if __name__ == "__main__":
-    infer_lstm_model()
+    infer_lstm_model(
+        input_file_path="lstm_data/input_seq_train_low_correlation_3_days.npy",
+        target_file_path="lstm_data/target_seq_train_low_correlation_3_days.npy",
+        model_save_path="forecast_results/20240608083927/lstm_model.pth",
+        results_save_path="forecast_results/test/forecast_results.json",
+        batch_size=1,
+        activation="sigmoid",
+        hidden_size=256,
+        num_layers=8,
+        forecast_plots_directory="forecast_results/test/infer_plots",
+        start_date="2023-05-01",
+        hours=72,
+    )

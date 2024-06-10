@@ -37,8 +37,8 @@ def fetch_weather_data(station_id, api_key, date):
 # Fetch the weather data for every day from 2020-01-01 to 2023-12-31
 
 # use a date library
-start_date = datetime.datetime(2024, 5, 1)
-end_date = datetime.datetime(2024, 6, 2)
+start_date = datetime.datetime(2020, 1, 1)
+end_date = datetime.datetime(2024, 7, 1)
 current_date = start_date
 while current_date <= end_date:
 

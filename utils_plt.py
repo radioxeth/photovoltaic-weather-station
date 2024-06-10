@@ -7,17 +7,23 @@ def plot_corr_matrix(df, filename="corr_plot.png"):
     Plot a correlation matrix of the columns in the DataFrame df
     """
     corr = df.corr()
-    plt.matshow(corr)
-    plt.xticks(range(len(corr.columns)), corr.columns, rotation=-45)
-    plt.yticks(range(len(corr.columns)), corr.columns, rotation=45)
-    plt.colorbar()
+    fig, ax = plt.subplots(figsize=(10, 8))
+    cax = ax.matshow(corr)
+    plt.xticks(
+        range(len(corr.columns)), corr.columns, rotation=-45, ha="right", size=12
+    )
+    # prevent y axis labels from being cut off
+    plt.yticks(range(len(corr.columns)), corr.columns, rotation=0, va="center", size=12)
+
+    fig.colorbar(cax, ax=ax)
 
     # add value to square on plot
     for i in range(len(corr.columns)):
         for j in range(len(corr.columns)):
-            plt.text(i, j, round(corr.iloc[i, j], 1), ha="center", va="center", size=6)
-
-    plt.savefig("corr_plot.png")
+            ax.text(i, j, round(corr.iloc[i, j], 1), ha="center", va="center", size=12)
+    plt.title("Correlation Matrix of Features", size=14)
+    plt.tight_layout()
+    plt.savefig(filename)
     plt.close()
 
 

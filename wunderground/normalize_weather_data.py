@@ -65,22 +65,6 @@ resampled_data["precipRate"] = resampled_data["precipRate"].apply(
     lambda x: 1 if x > 0 else 0
 )
 
-# add a column to determine how much time has passed since precipRate > 0 and temperature < 32
-resampled_data["timeSincePrecip"] = 0
-resampled_data["timeSinceFreezing"] = 0
-time_since_precip = 0
-time_since_freezing = 0
-for date in resampled_data.index:
-    if resampled_data.loc[date, "precipRate"] > 0:
-        time_since_precip = 0
-    else:
-        time_since_precip += 1
-    if resampled_data.loc[date, "tempAvg"] < 32:
-        time_since_freezing = 0
-    else:
-        time_since_freezing += 1
-    resampled_data.loc[date, "timeSincePrecip"] = time_since_precip
-    resampled_data.loc[date, "timeSinceFreezing"] = time_since_freezing
 
 print(resampled_data.head())
 # write to a new csv file

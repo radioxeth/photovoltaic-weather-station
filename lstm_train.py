@@ -18,6 +18,10 @@ def train_lstm_model(
     activation="sigmoid",
     hidden_size=128,
     num_layers=4,
+    criterion_type="MSE",
+    rolling_window_size=50,
+    threshold=0.001,
+    output_type="sinusoidal",
 ):
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     print(device)
@@ -43,8 +47,15 @@ def train_lstm_model(
         output_size=output_size,
         num_layers=num_layers,
         activation=activation,
+        output_type=output_type,
     ).to(device)
+
     criterion = nn.MSELoss()
+    if criterion_type == "MAE":
+        criterion = nn.L1Loss()
+    elif criterion_type == "MSE":
+        criterion = nn.MSELoss()
+
     optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
     batch_size = batch_size  # You can adjust the batch size
 
@@ -54,6 +65,8 @@ def train_lstm_model(
     # Training loop with batches
     model.train()
     epoch_loss = []
+    rolling_avg_loss = []
+
     for epoch in range(num_epochs):
         for inputs, labels in train_loader:
             inputs, labels = inputs.to(device), labels.to(device)
@@ -63,8 +76,26 @@ def train_lstm_model(
             loss.backward()
             optimizer.step()
         epoch_loss.append(loss.item())
+
+        # Print the current epoch loss
         print(f"Epoch {epoch+1}/{num_epochs} Loss: {loss.item():.4f}")
 
+        # Check if the loss has converged
+        if len(epoch_loss) > rolling_window_size + 1:
+            rolling_avg_loss.append(
+                sum(epoch_loss[-rolling_window_size:]) / rolling_window_size
+            )
+            if len(rolling_avg_loss) < 2:
+                continue
+            change_percent = (
+                rolling_avg_loss[-1] - rolling_avg_loss[-2]
+            ) / rolling_avg_loss[-2]
+            # print(f"Change in loss: {change_percent:.4f}")
+            if abs(change_percent) < threshold:
+                print(
+                    f"Loss has converged within threshold of {threshold} at epoch {epoch+1}"
+                )
+                break
     torch.save(model.state_dict(), model_save_path)
     print("Model saved")
 
@@ -76,11 +107,15 @@ def train_lstm_model(
         "num_layers": num_layers,
         "activation": activation,
         "batch_size": batch_size,
-        "num_epochs": num_epochs,
+        "num_epochs": epoch + 1,
         "epoch_loss": epoch_loss,
         "model_save_path": model_save_path,
         "input_file_path": input_file_path,
         "target_file_path": target_file_path,
+        "criterion": criterion_type,
+        "threshold": threshold,
+        "rolling_window_size": rolling_window_size,
+        "output_type": output_type,
     }
     pd.Series(metadata).to_json(metadata_save_path)
     print("Metadata saved")

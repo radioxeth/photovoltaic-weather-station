@@ -6,22 +6,22 @@ from utils_plt import (
     plot_line,
     plot_3d_scatter,
 )
-from utils import mean_columns, pca_data, set_data_date_index, solar_columns
+from utils import mean_columns, pca_data, solar_columns, correlation_plot_columns
 
 
 # Load the solar_energy data
 weather_solar_data = pd.read_csv("wunderground/data/weather_solar_data.csv")
-
+weather_solar_data.set_index("obsTimeLocal", inplace=True)
 print(weather_solar_data.head())
 
 # combine solar and mean columns
-# corr_data = weather_solar_data[mean_columns + solar_columns
+corr_data = weather_solar_data[correlation_plot_columns]
 
-weather_solar_data = set_data_date_index(weather_solar_data, "obsTimeLocal")
+# weather_solar_data = set_data_date_index(weather_solar_data, "obsTimeLocal")
 ## remove NA columns from weather solar data
 
 # make a correlation matrix
-# plot_corr_matrix(corr_data, "corr_matrix.png")
+plot_corr_matrix(corr_data, "corr_matrix.png")
 
 
 DIR_SCATTER_PLOT = "scatter_plots"
@@ -246,9 +246,9 @@ DIR_SCATTER_PLOT = "scatter_plots"
 # plt.savefig("plot.png")
 # plt.close()
 
-print(weather_solar_data.shape)
+# print(weather_solar_data.shape)
 
 
-# calculate the PCA
-X_pca = pca_data(weather_solar_data, 17)
-print(X_pca.shape)
+# # calculate the PCA
+# X_pca = pca_data(weather_solar_data, 17)
+# print(X_pca.shape)

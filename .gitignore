@@ -1,0 +1,7 @@
+**/*.png
+**/*.npy
+**/*.pyc
+**/*.pth
+**/*.csv
+**/*.json
+**/*.drawio

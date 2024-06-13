@@ -7,17 +7,23 @@ def plot_corr_matrix(df, filename="corr_plot.png"):
     Plot a correlation matrix of the columns in the DataFrame df
     """
     corr = df.corr()
-    plt.matshow(corr)
-    plt.xticks(range(len(corr.columns)), corr.columns, rotation=-45)
-    plt.yticks(range(len(corr.columns)), corr.columns, rotation=45)
-    plt.colorbar()
+    fig, ax = plt.subplots(figsize=(10, 8))
+    cax = ax.matshow(corr)
+    plt.xticks(
+        range(len(corr.columns)), corr.columns, rotation=-45, ha="right", size=12
+    )
+    # prevent y axis labels from being cut off
+    plt.yticks(range(len(corr.columns)), corr.columns, rotation=0, va="center", size=12)
+
+    fig.colorbar(cax, ax=ax)
 
     # add value to square on plot
     for i in range(len(corr.columns)):
         for j in range(len(corr.columns)):
-            plt.text(i, j, round(corr.iloc[i, j], 1), ha="center", va="center", size=6)
-
-    plt.savefig("corr_plot.png")
+            ax.text(i, j, round(corr.iloc[i, j], 1), ha="center", va="center", size=12)
+    plt.title("Correlation Matrix of Features", size=14)
+    plt.tight_layout()
+    plt.savefig(filename)
     plt.close()
 
 
@@ -60,6 +66,45 @@ def plot_3d_scatter(
         ax.scatter(df[x], df[y], df[z], c=df[color_by])
     else:
         ax.scatter(df[x], df[y], df[z], c=df.index.month)
+    if flip_x_axes:
+        ax.invert_xaxis()
+    if flip_y_axes:
+        ax.invert_yaxis()
+    if flip_z_axes:
+        ax.invert_zaxis()
+    ax.set_xlabel(xlabel)
+    ax.set_ylabel(ylabel)
+    ax.set_zlabel(zlabel)
+    plt.title(title)
+    plt.tight_layout()
+    plt.savefig(filename)
+    plt.close()
+
+
+def plot_3d_scatter_no_index(
+    df,
+    x,
+    y,
+    z,
+    xlabel,
+    ylabel,
+    zlabel,
+    title,
+    filename="3d_scatter_plot.png",
+    color_by=None,
+    flip_x_axes=False,
+    flip_y_axes=False,
+    flip_z_axes=False,
+):
+    """
+    Plot a 3D scatter plot of the columns x, y, and z in the DataFrame df
+    """
+    fig = plt.figure()
+    ax = fig.add_subplot(111, projection="3d")
+    if color_by:
+        ax.scatter(df[x], df[y], df[z], c=df[color_by])
+    else:
+        ax.scatter(df[x], df[y], df[z])
     if flip_x_axes:
         ax.invert_xaxis()
     if flip_y_axes:

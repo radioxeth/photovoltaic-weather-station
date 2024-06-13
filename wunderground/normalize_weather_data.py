@@ -59,7 +59,11 @@ weather_data["obsTimeLocal"] = pd.to_datetime(weather_data["obsTimeLocal"])
 weather_data.set_index("obsTimeLocal", inplace=True)
 
 resampled_data = weather_data.resample("15T").agg(agg_columns)
-# resampled_data = weather_data.resample("15T").mean()
+
+# set precipRate to binary column based on threshold of 0
+resampled_data["precipRate"] = resampled_data["precipRate"].apply(
+    lambda x: 1 if x > 0 else 0
+)
 
 
 print(resampled_data.head())
@@ -83,10 +87,12 @@ for date in resampled_data.index:
     solar_power = solar_power_data.loc[solar_power_data.index == date]
     solar_energy = solar_energy_data.loc[solar_energy_data.index == date]
     if not solar_power.empty:
-        resampled_data.loc[date, "solarPower"] = solar_power["power"].values[0]
+        resampled_data.loc[date, "solarPower"] = solar_power["value"].values[0]
     if not solar_energy.empty:
-        resampled_data.loc[date, "solarEnergy"] = solar_energy["energy"].values[0]
+        resampled_data.loc[date, "solarEnergy"] = solar_energy["value"].values[0]
+    print(f"Processed {date}")
 
+resampled_data.drop(columns=["solarRadiationHigh", "uvHigh"], inplace=True)
 
 # fill missing values with 0
 # resampled_data.fillna(0, inplace=True)

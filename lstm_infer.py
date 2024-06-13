@@ -77,6 +77,8 @@ def infer_lstm_model(
 
             # set the x-axis to be the hours
             x = range(hours * 4)
+            # divide each value by 4 to get the hours
+            x = [i / 4 for i in x]
 
             # Plot the first day of predictions
             plt.title(f"Forecasted Power {date_str}")

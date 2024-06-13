@@ -155,6 +155,8 @@ plt.savefig("forecast_epoch_loss.png")
 
 
 file_path = "forecast_results/20240607173904/forecast_results.json"
+# file_path = "noaa_forecast_results/20240607173904/noaa_forecast_results.json"
+print(file_path)
 mse_range = range_of_mse(file_path)
 mae_range = range_of_mae(file_path)
 r2_range = range_of_r2(file_path)

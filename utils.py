@@ -135,6 +135,74 @@ time_since_columns = ["timeSinceFreezing", "timeSincePrecip"]
 date_columns = ["year", "month", "day", "hour", "minute"]
 
 
+def mean_of_value(file, value):
+    with open(file) as f:
+        data = json.load(f)
+    values = []
+    for i in range(len(data["results"])):
+        values.append(data["results"][i][value])
+    mean = sum(values) / len(values)
+
+    file_name = data["input_file_path"].split("/")[-1]
+    return mean, file_name
+
+
+def range_of_mse(file):
+    with open(file) as f:
+        data = json.load(f)
+    # find the max and min mse
+    values = []
+    for i in range(len(data["results"])):
+        values.append(data["results"][i]["mse"])
+    max_mse = max(values)
+    min_mse = min(values)
+
+    file_name = data["input_file_path"].split("/")[-1]
+    return (max_mse, min_mse), file_name
+
+
+def range_of_rmse(file):
+    with open(file) as f:
+        data = json.load(f)
+    # find the max and min mse
+    values = []
+    for i in range(len(data["results"])):
+        values.append(data["results"][i]["mse"] ** 0.5)
+    max_rmse = max(values)
+    min_rmse = min(values)
+
+    file_name = data["input_file_path"].split("/")[-1]
+    return (max_rmse, min_rmse), file_name
+
+
+def range_of_mae(file):
+    with open(file) as f:
+        data = json.load(f)
+    # find the max and min mse
+    values = []
+    for i in range(len(data["results"])):
+        values.append(data["results"][i]["mae"])
+    max_mae = max(values)
+    min_mae = min(values)
+
+    file_name = data["input_file_path"].split("/")[-1]
+    return (max_mae, min_mae), file_name
+
+
+def range_of_r2(file):
+    with open(file) as f:
+        data = json.load(f)
+    # find the max and min mse
+    values = []
+    for i in range(len(data["results"])):
+        values.append(data["results"][i]["r2"])
+    max_r2 = max(values)
+    min_r2 = min(values)
+
+    file_name = data["input_file_path"].split("/")[-1]
+    return (max_r2, min_r2), file_name
+
+
 # use the actual and predicted values to calculate the mean squared error
 def calculate_mse(file):
     with open(file) as f:
@@ -187,6 +255,54 @@ def calculate_r2(file):
         actual.append(data["results"][i]["actual"])
         predicted.append(data["results"][i]["predicted"])
     r2 = r2_score(actual, predicted)
+
+    file_name = data["input_file_path"].split("/")[-1]
+    return r2, file_name
+
+
+def calculate_mean_mse(file):
+    with open(file) as f:
+        data = json.load(f)
+    values = []
+    for i in range(len(data["results"])):
+        values.append(data["results"][i]["mse"])
+    mse = sum(values) / len(values)
+
+    file_name = data["input_file_path"].split("/")[-1]
+    return mse, file_name
+
+
+def calculate_mean_rmse(file):
+    with open(file) as f:
+        data = json.load(f)
+    values = []
+    for i in range(len(data["results"])):
+        values.append(data["results"][i]["mse"] ** 0.5)
+    rmse = sum(values) / len(values)
+
+    file_name = data["input_file_path"].split("/")[-1]
+    return rmse, file_name
+
+
+def calculate_mean_mae(file):
+    with open(file) as f:
+        data = json.load(f)
+    values = []
+    for i in range(len(data["results"])):
+        values.append(data["results"][i]["mae"])
+    mae = sum(values) / len(values)
+
+    file_name = data["input_file_path"].split("/")[-1]
+    return mae, file_name
+
+
+def calculate_mean_r2(file):
+    with open(file) as f:
+        data = json.load(f)
+    values = []
+    for i in range(len(data["results"])):
+        values.append(data["results"][i]["r2"])
+    r2 = sum(values) / len(values)
 
     file_name = data["input_file_path"].split("/")[-1]
     return r2, file_name

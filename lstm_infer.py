@@ -75,11 +75,14 @@ def infer_lstm_model(
             outputs = model(inputs)
             outputs = outputs.view(-1, output_size)
 
+            # set the x-axis to be the hours
+            x = range(hours * 4)
+
             # Plot the first day of predictions
             plt.title(f"Forecasted Power {date_str}")
-            plt.plot(labels[:, 0].cpu(), label="Actual")
-            plt.plot(outputs[:, 0].cpu(), label="Forecasted", linestyle="--")
-            plt.xlabel("time (minutes)")
+            plt.plot(x, labels[:, 0].cpu(), label="Actual")
+            plt.plot(x, outputs[:, 0].cpu(), label="Forecasted", linestyle="--")
+            plt.xlabel("time (hours)")
             plt.ylabel("solar power (W)")
             plt.legend()
 
@@ -121,18 +124,19 @@ def infer_lstm_model(
             elif criterion_type == "MSE":
                 criterion = nn.MSELoss()
             # find the mean squared error
-            criterion = nn.MSELoss()
+            # criterion = nn.MSELoss()
 
-            # Assuming outputs and labels are of shape [batch_size, num_features]
-            # and you only care about the first feature (index 0)
-            focused_outputs = outputs[:, 0]
-            focused_labels = labels[:, 0]
+            # # Assuming outputs and labels are of shape [batch_size, num_features]
+            # # and you only care about the first feature (index 0)
+            # focused_outputs = outputs[:, 0]
+            # focused_labels = labels[:, 0]
 
             # save focused_outputs and focused_labels to results
 
             # Now calculate the loss only on the selected feature
-            loss = criterion(focused_outputs, focused_labels)
+            # loss = criterion(focused_outputs, focused_labels)
             # print(f"{date_str} MSE: {loss.item():.4f}")
+            # calculate the r2 score
 
             # add results to array
             results.append(
@@ -141,7 +145,9 @@ def infer_lstm_model(
                     "predicted": outputs_sum.item(),
                     "actual": labels_sum.item(),
                     "delta": outputs_sum.item() - labels_sum.item(),
-                    "mse": loss.item(),
+                    "mse": mse,
+                    "mae": mae,
+                    "r2": r2,
                 }
             )
             start_date_dt += pd.Timedelta(hours=hours)
@@ -157,15 +163,15 @@ def infer_lstm_model(
 # main function
 if __name__ == "__main__":
     infer_lstm_model(
-        input_file_path="lstm_data/input_seq_train_low_correlation_3_days.npy",
-        target_file_path="lstm_data/target_seq_train_low_correlation_3_days.npy",
-        model_save_path="forecast_results/20240608083927/lstm_model.pth",
-        results_save_path="forecast_results/test/forecast_results.json",
+        input_file_path="lstm_data/input_seq_infer_low_correlation.npy",
+        target_file_path="lstm_data/target_seq_infer_low_correlation.npy",
+        model_save_path="forecast_results/20240607173904/lstm_model.pth",
+        results_save_path="forecast_results/20240607173904/forecast_results_2.json",
         batch_size=1,
         activation="sigmoid",
         hidden_size=256,
         num_layers=8,
-        forecast_plots_directory="forecast_results/test/infer_plots",
+        forecast_plots_directory="forecast_results/20240607173904/infer_plots_2",
         start_date="2023-05-01",
-        hours=72,
+        hours=24,
     )

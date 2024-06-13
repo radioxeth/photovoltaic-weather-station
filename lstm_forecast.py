@@ -2,9 +2,14 @@ import os
 from lstm_infer import infer_lstm_model
 from datetime import datetime
 import json
-from utils import calculate_mae, calculate_mse, calculate_rmse, calculate_r2
+from utils import (
+    calculate_mean_mae,
+    calculate_mean_mse,
+    calculate_mean_rmse,
+    calculate_mean_r2,
+)
 
-test_dir = 20240607094233
+test_dir = 20240607173904
 description = "_low_correlation_forecast_linear_interpolation"
 
 input_file_path = f"lstm_data/input_seq_forecast{description}.npy"
@@ -62,11 +67,11 @@ infer_lstm_model(
 )
 
 
-# print mse,mase,rmse,r2
-print("MSE: ", calculate_mse(forecast_save_path))
-print("MAE: ", calculate_mae(forecast_save_path))
-print("RMSE: ", calculate_rmse(forecast_save_path))
-print("R2: ", calculate_r2(forecast_save_path))
+# # print mse,mase,rmse,r2
+print("MSE: ", calculate_mean_mse(forecast_save_path))
+print("MAE: ", calculate_mean_mae(forecast_save_path))
+print("RMSE: ", calculate_mean_rmse(forecast_save_path))
+print("R2: ", calculate_mean_r2(forecast_save_path))
 
 
 # forecast_results_directory = "forecast_results"

@@ -1,7 +1,17 @@
 import os
 import json
 import pandas as pd
-from utils import calculate_mse, calculate_mae, calculate_rmse, calculate_r2
+from utils import (
+    calculate_mse,
+    calculate_mae,
+    calculate_rmse,
+    calculate_r2,
+    range_of_mae,
+    range_of_mse,
+    range_of_rmse,
+    range_of_r2,
+    mean_of_value,
+)
 
 
 def get_metadata(file):
@@ -39,6 +49,7 @@ for dir in dirs:
     mae = calculate_mae(file)
     rmse = calculate_rmse(file)
     r2 = calculate_r2(file)
+
     if "activation" not in metadata:
         metadata["activation"] = "sigmoid"  # default value
     if "criterion" not in metadata:
@@ -53,10 +64,9 @@ for dir in dirs:
             "num_epochs": metadata["num_epochs"],
             "activation": metadata["activation"],
             "criterion": metadata["criterion"],
-            "mse": mse[0],
-            "mae": mae[0],
-            "rmse": rmse[0],
-            "r2": r2[0],
+            "mse": round(mse[0], 0),
+            "mae": round(mae[0], 0),
+            "r2": round(r2[0], 2),
             "file": mse[1],
             "dir": dir,
         }
@@ -98,9 +108,11 @@ import matplotlib.pyplot as plt
 
 print(len(dirs))
 
+
+n_plots = 3
 # Assuming 'dirs' is defined somewhere in your script.
 fig, ax = plt.subplots(
-    len(dirs), 1, figsize=(10, len(dirs) * 3)
+    n_plots, 1, figsize=(10, n_plots * 3)
 )  # Set the figure size dynamically based on the number of directories.
 if (
     len(dirs) == 1
@@ -108,48 +120,50 @@ if (
     ax = [ax]
 
 index = 0
-for dir in dirs:
+for result in results:
+    dir = result["dir"]
     file = f"forecast_results/{dir}/metadata.json"
     if not os.path.exists(file):
         continue
     with open(file) as f:
         metadata = json.load(f)
     # Plot the epoch loss in the subplot
-    ax[index].plot(metadata["epoch_loss"])
-    ax[index].set_xlabel("Epoch")  # Correct method to set xlabel
-    ax[index].set_ylabel("Loss")  # Correct method to set ylabel
-    ax[index].set_title(f"Epoch Loss for {dir}")  # Correct method to set title
-
-    # determine where metadata["epoch_loss"] achieves less than 1% change over a 10 epoch rolling window
-    rolling_window_size = 10
-    threshold = 0.01
-    rolling_avg_loss = []
-    for i in range(rolling_window_size, len(metadata["epoch_loss"])):
-        rolling_avg_loss.append(
-            sum(metadata["epoch_loss"][i - rolling_window_size : i])
-            / rolling_window_size
-        )
-    change_percent = []
-    for i in range(1, len(rolling_avg_loss)):
-        change_percent.append(
-            (rolling_avg_loss[i - 1] - rolling_avg_loss[i]) / rolling_avg_loss[i - 1]
-        )
 
     if "activation" not in metadata:
         metadata["activation"] = "sigmoid"  # default value
     if "criterion" not in metadata:
         metadata["criterion"] = "MSE"
     # display the metadata in each subplot
-    ax[index].text(
-        0.5,
-        0.5,
-        f"Input Size: {metadata['input_size']}\nOutput Size: {metadata['output_size']}\nHidden Size: {metadata['hidden_size']}\nNum Layers: {metadata['num_layers']}\nBatch Size: {metadata['batch_size']}\nNum Epochs: {metadata['num_epochs']}\nActivation: {metadata['activation']}\nCriterion: {metadata['criterion']}",
-        horizontalalignment="center",
-        verticalalignment="center",
-        transform=ax[index].transAxes,
-    )
+    if index < n_plots:
+        ax[index].plot(metadata["epoch_loss"])
+        ax[index].set_xlabel("Epoch")  # Correct method to set xlabel
+        ax[index].set_ylabel("Loss")  # Correct method to set ylabel
+        ax[index].set_title(f"Epoch Loss for {dir}")  # Correct method to set title
+        ax[index].text(
+            0.5,
+            0.5,
+            f"Input Size: {metadata['input_size']}\nOutput Size: {metadata['output_size']}\nHidden Size: {metadata['hidden_size']}\nNum Layers: {metadata['num_layers']}\nBatch Size: {metadata['batch_size']}\nNum Epochs: {metadata['num_epochs']}\nActivation: {metadata['activation']}\nCriterion: {metadata['criterion']}",
+            horizontalalignment="center",
+            verticalalignment="center",
+            transform=ax[index].transAxes,
+        )
 
     index += 1
 
 plt.tight_layout()
 plt.savefig("forecast_epoch_loss.png")
+
+
+file_path = "forecast_results/20240607173904/forecast_results.json"
+mse_range = range_of_mse(file_path)
+mae_range = range_of_mae(file_path)
+r2_range = range_of_r2(file_path)
+
+print(f"range of mse: {mse_range}")
+print(f"range of mae: {mae_range}")
+print(f"range of r2: {r2_range}")
+
+
+print(f"mean mse: {mean_of_value(file_path, 'mse')}")
+print(f"mean mae: {mean_of_value(file_path, 'mae')}")
+print(f"mean r2: {mean_of_value(file_path, 'r2')}")

@@ -2,7 +2,7 @@
 
 A repository for investigating the relationship between local, Personal Weather Station (PWS) and Residential Solar Panel (RSP) power production. We then train a Long-Short Term model using the available PWS and RSP data to forecast next-day power production given a National Weather Service (NWS) forecast
 
-Caution! This is not production ready - it is a class project for CIS-600 Fundamentals of Data and Knowledge Mining at Syracuse University College of Computer Science and Engineering. The data scraping and normalization process is not fully automated and you need API keys which I have not shared.
+Caution! This is not production ready - it is a class project for CIS-600 Fundamentals of Data and Knowledge Mining at Syracuse University College of Engineering and Computer Science. The data scraping and normalization process is not fully automated and you need API keys which I have not shared.
 
 Link to paper: [At Home Solar Forecasting](/daniel_shannon_final_paper.pdf)
 

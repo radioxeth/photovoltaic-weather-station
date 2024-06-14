@@ -84,6 +84,7 @@ An overview of the LSTM unit to address the vanishing gradient problem.
 
 5. Combine the historical weather forecast and solar data
     - [/noaa_forecasts/combine_forecast_and_solar.py](/noaa_forecasts/combine_forecast_and_solar.py)
+    - This combines the forecasted weather and solar data into `noaa_forecasts/forecasted_weather_solar_data.csv`
 
 ## Model Training and Testing
 ([top](#at-home-solar-forecasting))

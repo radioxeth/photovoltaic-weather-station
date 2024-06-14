@@ -109,7 +109,7 @@ import matplotlib.pyplot as plt
 print(len(dirs))
 
 
-n_plots = 3
+n_plots = len(dirs) - 1
 # Assuming 'dirs' is defined somewhere in your script.
 fig, ax = plt.subplots(
     n_plots, 1, figsize=(10, n_plots * 3)

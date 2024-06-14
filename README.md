@@ -4,7 +4,7 @@ A repository for investigating the relationship between local, Personal Weather 
 
 Caution! This is not production ready - it is a class project for CIS-600 Fundamentals of Data and Knowledge mining. The data scraping and normalization process is not automated.
 
-Link to paper: [At Home Solar Forecasting](https://drive.google.com/file/d/1RW4q4SvsZVMUz_bBUI2IOSoSQkqzcx50/view?usp=sharing)
+Link to paper: [At Home Solar Forecasting](/daniel_shannon_final_paper.pdf)
 
 **Contents**
 - [Overview of Project](#overview-of-project)
@@ -113,3 +113,15 @@ The LSTM model itself is defined in [lstm.py](/lstm.py)
 - [evaluate.py](/evaluate.py)
   - Evaluates the performance of the models using the saved metadata and results files.
   - plots training epochs and saves results to `evaluate.csv`
+
+### Correlation Plot
+
+[corr matrix](/corr_matrix.png)
+
+### PCA Variance
+
+[PCA Variance](/pca_plot/cumulative_variance.png)
+
+### Epoch Training
+
+[Training Loss](/forecast_epoch_loss.png)

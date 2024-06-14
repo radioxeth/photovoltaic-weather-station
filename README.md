@@ -7,12 +7,22 @@ Caution! This is not production ready - it is a class project for CIS-600 Fundam
 Link to paper: [At Home Solar Forecasting](/daniel_shannon_final_paper.pdf)
 
 **Contents**
+- [Results](#results)
 - [Data](#data)
 - [Overview of Project](#overview-of-project)
 - [Data Collection](#data-collection)
 - [Model Training and Testing](#model-training-and-testing)
 - [Investigation and Evaluation](#investigation-and-evaluation)
 
+
+## Results
+([top](#at-home-solar-forecasting))
+
+||NWS Forecast Results||
+|-|-|-|
+|<img src="/noaa_forecast_results/20240607173904/forecast_plots/lstm_infer_2024-05-29.png" width=300>|<img src="/noaa_forecast_results/20240607173904/forecast_plots/lstm_infer_2024-05-30.png" width=300>|<img src="/noaa_forecast_results/20240607173904/forecast_plots/lstm_infer_2024-05-31.png" width=300>|
+|<img src="/noaa_forecast_results/20240607173904/forecast_plots/lstm_infer_2024-06-01.png" width=300>|<img src="/noaa_forecast_results/20240607173904/forecast_plots/lstm_infer_2024-06-02.png" width=300>|<img src="/noaa_forecast_results/20240607173904/forecast_plots/lstm_infer_2024-06-03.png" width=300>|
+|<img src="/noaa_forecast_results/20240607173904/forecast_plots/lstm_infer_2024-06-04.png" width=300>|<img src="/noaa_forecast_results/20240607173904/forecast_plots/lstm_infer_2024-06-05.png" width=300>|<img src="/noaa_forecast_results/20240607173904/forecast_plots/lstm_infer_2024-06-06.png" width=300>|
 
 ## Data
 ([top](#at-home-solar-forecasting))
@@ -31,6 +41,12 @@ Link to paper: [At Home Solar Forecasting](/daniel_shannon_final_paper.pdf)
     - input and target arrays for training, inference, and forecasts
   - `/model_results`
     - metadata for model and results
+
+### Inference Plots
+- Inference plots are available in:
+  - [forecast_results/20240607173904/infer_plots](/forecast_results/20240607173904/infer_plots)
+- Forecast plots are available in:
+  - [noaa_forecast_results/20240607173904/forecast_plots](/noaa_forecast_results/20240607173904/forecast_plots)
 
 ## Overview of Project
 ([top](#at-home-solar-forecasting))

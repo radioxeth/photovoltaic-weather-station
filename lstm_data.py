@@ -120,7 +120,7 @@ if infer:
 if forecast:
     forecast_directory = "noaa_forecasts"
     forecast_weather_solar_data = pd.read_csv(
-        f"{forecast_directory}/combined_weather_solar_data.csv"
+        f"{forecast_directory}/forecasted_weather_solar_data.csv"
     )
 
     start_date_forecast = "2024-05-29"

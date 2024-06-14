@@ -144,4 +144,4 @@ for column in final_df.columns:
 
 final_df.reset_index(inplace=True)
 print(final_df.head())
-final_df.to_csv("combined_weather_solar_data.csv", index=False)
+final_df.to_csv("forecasted_weather_solar_data.csv", index=False)

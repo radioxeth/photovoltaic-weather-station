@@ -7,11 +7,22 @@ Caution! This is not production ready - it is a class project for CIS-600 Fundam
 Link to paper: [At Home Solar Forecasting](/daniel_shannon_final_paper.pdf)
 
 **Contents**
+- [Data](#data)
 - [Overview of Project](#overview-of-project)
 - [Data Collection](#data-collection)
 - [Model Training and Testing](#model-training-and-testing)
 - [Investigation and Evaluation](#investigation-and-evaluation)
 
+## Data
+`data.zip` contains the following files:
+- `weather_solar_data.csv`
+  - scraped PWS weather and RSP solar data combined
+  - used in training and inference
+- `forecasted_weather_solar_data.csv`
+  - scraped NWS weather forecasts and solar data combined
+  - used in forecast inference
+- `inference_results.csv`
+  - inference results and summaries
 
 ## Overview of Project
 ([top](#at-home-solar-forecasting))

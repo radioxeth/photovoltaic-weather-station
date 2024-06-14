@@ -18,7 +18,9 @@ Link to paper: [At Home Solar Forecasting](/daniel_shannon_final_paper.pdf)
 ## Results
 ([top](#at-home-solar-forecasting))
 
-||NWS Forecast Results||
+### Solar Production Forecasts using NWS Weather Forecasts
+
+||||
 |-|-|-|
 |<img src="/noaa_forecast_results/20240607173904/forecast_plots/lstm_infer_2024-05-29.png" width=300>|<img src="/noaa_forecast_results/20240607173904/forecast_plots/lstm_infer_2024-05-30.png" width=300>|<img src="/noaa_forecast_results/20240607173904/forecast_plots/lstm_infer_2024-05-31.png" width=300>|
 |<img src="/noaa_forecast_results/20240607173904/forecast_plots/lstm_infer_2024-06-01.png" width=300>|<img src="/noaa_forecast_results/20240607173904/forecast_plots/lstm_infer_2024-06-02.png" width=300>|<img src="/noaa_forecast_results/20240607173904/forecast_plots/lstm_infer_2024-06-03.png" width=300>|

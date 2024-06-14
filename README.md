@@ -171,3 +171,6 @@ The LSTM model itself is defined in [lstm.py](/lstm.py)
 
 <img src="/forecast_epoch_loss.png" alt="training loss" width=500>
 <!-- ![Training Loss](/forecast_epoch_loss.png) -->
+
+
+([top](#at-home-solar-forecasting))

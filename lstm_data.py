@@ -38,18 +38,18 @@ input_seq_forecast_save_path = f"{data_dir}/input_seq_forecast{description}.npy"
 target_seq_forecast_save_path = f"{data_dir}/target_seq_forecast{description}.npy"
 
 # throw error if files exist
-# if os.path.exists(input_seq_train_save_path) and train:
-#     raise ValueError(f"{input_seq_train_save_path} already exists")
-# if os.path.exists(target_seq_train_save_path) and train:
-#     raise ValueError(f"{target_seq_train_save_path} already exists")
-# if os.path.exists(input_seq_infer_save_path) and infer:
-#     raise ValueError(f"{input_seq_infer_save_path} already exists")
-# if os.path.exists(target_seq_infer_save_path) and infer:
-#     raise ValueError(f"{target_seq_infer_save_path} already exists")
-# if os.path.exists(input_seq_forecast_save_path) and forecast:
-#     raise ValueError(f"{input_seq_forecast_save_path} already exists")
-# if os.path.exists(target_seq_forecast_save_path) and forecast:
-#     raise ValueError(f"{target_seq_forecast_save_path} already exists")
+if os.path.exists(input_seq_train_save_path) and train:
+    raise ValueError(f"{input_seq_train_save_path} already exists")
+if os.path.exists(target_seq_train_save_path) and train:
+    raise ValueError(f"{target_seq_train_save_path} already exists")
+if os.path.exists(input_seq_infer_save_path) and infer:
+    raise ValueError(f"{input_seq_infer_save_path} already exists")
+if os.path.exists(target_seq_infer_save_path) and infer:
+    raise ValueError(f"{target_seq_infer_save_path} already exists")
+if os.path.exists(input_seq_forecast_save_path) and forecast:
+    raise ValueError(f"{input_seq_forecast_save_path} already exists")
+if os.path.exists(target_seq_forecast_save_path) and forecast:
+    raise ValueError(f"{target_seq_forecast_save_path} already exists")
 
 # training data
 if train:

@@ -95,5 +95,4 @@ for date in resampled_data.index:
 resampled_data.drop(columns=["solarRadiationHigh", "uvHigh"], inplace=True)
 
 # fill missing values with 0
-# resampled_data.fillna(0, inplace=True)
 resampled_data.to_csv("data/weather_solar_data.csv")

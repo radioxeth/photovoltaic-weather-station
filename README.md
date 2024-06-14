@@ -13,8 +13,11 @@ Link to paper: [At Home Solar Forecasting](/daniel_shannon_final_paper.pdf)
 - [Model Training and Testing](#model-training-and-testing)
 - [Investigation and Evaluation](#investigation-and-evaluation)
 
+
 ## Data
-`data.zip` contains the following files:
+([top](#at-home-solar-forecasting))
+
+[data.zip](data.zip) contains the following files:
 - `weather_solar_data.csv`
   - scraped PWS weather and RSP solar data combined
   - used in training and inference

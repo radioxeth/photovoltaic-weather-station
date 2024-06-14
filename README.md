@@ -51,32 +51,38 @@ Link to paper: [At Home Solar Forecasting](/daniel_shannon_final_paper.pdf)
 ## Overview of Project
 ([top](#at-home-solar-forecasting))
 
-![Satellite View](/images/satellite_view.png)
+<img src="/images/satellite_view.png" width=500 alt="Satellite View">
+<!-- ![Satellite View](/images/satellite_view.png) -->
 
 Single family home in Denver, CO with 24 solar panels and a 5-in-1 PWS
 <hr>
 
-![Schematic View](/images/pv_schematic.png)
+<img src="/images/pv_schematic.png" width=500 alt="Schematic View">
+<!-- ![Schematic View](/images/pv_schematic.png) -->
 
 Schematic view of the panels.
 <hr>
 
-![Data Collection](/images/data_collections.png)
+<img src="/images/data_collections.png" width=500 alt="Data Collection">
+<!-- ![Data Collection](/images/data_collections.png) -->
 
 The resampling and feature extraction used for RSP, PWS, and NWS data.
 <hr>
 
-![Project Design](/images/project_design.png)
+<img src="/images/project_design.png" width=500 alt="Project Design">
+<!-- ![Project Design](/images/project_design.png) -->
 
 General overview of the project design.
 <hr>
 
-![Binning](/images/binning.png)
+<img src="/images/binning.png" alt="Binning">
+<!-- ![Binning](/images/binning.png) -->
 
 How we bin the training data using a sliding window.
 <hr>
 
-![LSTM Model](/images/lstm.png)
+<img src="/images/lstm.png" width=500 alt="Long Short Term Memory Model">
+<!-- ![LSTM Model](/images/lstm.png) -->
 
 An overview of the LSTM unit to address the vanishing gradient problem.
 
@@ -152,12 +158,16 @@ The LSTM model itself is defined in [lstm.py](/lstm.py)
 
 ### Correlation Plot
 
-![Correlation Matrix](/corr_matrix.png)
+<img src="/corr_matrix.png" width=500 alt="Correlation Matrix">
+<!-- ![Correlation Matrix](/corr_matrix.png) -->
 
 ### PCA Variance
 
-![PCA Variance](/pca_plot/cumulative_variance.png)
+<img src="/pca_plot/cumulative_variance.png" width=500 alt="PCA Variance">
+<!-- ![PCA Variance](/pca_plot/cumulative_variance.png) -->
 
 ### Epoch Training
 
-![Training Loss](/forecast_epoch_loss.png)
+
+<img src="/forecast_epoch_loss.png" alt="training loss" width=500>
+<!-- ![Training Loss](/forecast_epoch_loss.png) -->

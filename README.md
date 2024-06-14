@@ -42,7 +42,12 @@ Link to paper: [At Home Solar Forecasting](/daniel_shannon_final_paper.pdf)
   - `/model_data`
     - input and target arrays for training, inference, and forecasts
   - `/model_results`
-    - metadata for model and results
+    - `lstm_model.pth` is the model
+    - `metadata.json` is the model parameters used to train the model
+    - `forecast_results.json` is the results of testing the model
+    - `noaa_forecast_results.json` is the results of inference on the NWS forecast
+    
+
 
 ### Inference Plots
 - Inference plots are available in:

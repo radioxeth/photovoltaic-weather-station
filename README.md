@@ -26,6 +26,11 @@ Link to paper: [At Home Solar Forecasting](/daniel_shannon_final_paper.pdf)
   - used in forecast inference
 - `inference_results.csv`
   - inference results and summaries
+- for the best performing model only
+  - `/model_data`
+    - input and target arrays for training, inference, and forecasts
+  - `/model_results`
+    - metadata for model and results
 
 ## Overview of Project
 ([top](#at-home-solar-forecasting))

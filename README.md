@@ -127,12 +127,12 @@ The LSTM model itself is defined in [lstm.py](/lstm.py)
 
 ### Correlation Plot
 
-[corr matrix](/corr_matrix.png)
+![Correlation Matrix](/corr_matrix.png)
 
 ### PCA Variance
 
-[PCA Variance](/pca_plot/cumulative_variance.png)
+![PCA Variance](/pca_plot/cumulative_variance.png)
 
 ### Epoch Training
 
-[Training Loss](/forecast_epoch_loss.png)
+![Training Loss](/forecast_epoch_loss.png)
